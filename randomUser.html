@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    body{
+        background-color:rgb(211, 176, 243);
+    }
+</style>
+
+<body>
+    <h1 class="p-2" style="text-align: center">Random Users Profile Generator</h1>
+    <div class="text-center">
+        <button type="button" class="btn btn-outline-primary" onclick="displayUser()">Generate</button>
+    </div>
+    <br>
+    <div id="result" class="text-center p-3"></div>
+
+    <script>
+        function displayUser() {
+            fetch('https://randomuser.me/api/')
+            .then(response => response.json())
+            .then(data => displayProfile(data.results[0]))
+            .catch(error => console.error('Error fetching user:', error));
+        }
+
+        function displayProfile(user) {
+            let htmldata = `
+                <div class="card mx-auto shadow-lg" style="width: 18rem;">
+                    <img src="${user.picture.large}" class="card-img-top" alt="User Picture">
+                    <div class="card-body">
+                        <h5 class="card-title">${user.name.first} ${user.name.last}</h5>
+                        <p class="card-text">Gender: ${user.gender}</p>
+                        <p class="card-text">Email: ${user.email}</p>
+                        <p class="card-text">Location: ${user.location.city}, ${user.location.country}</p>
+                        <p class="card-text">DOB: ${user.dob}</p>
+                        <p class="card-text">Phone: ${user.phone}</p>
+                        <p class="card-text">Nationality: ${user.nat}</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('result').innerHTML = htmldata;
+        }
+    </script>
+</body>
+</html>
